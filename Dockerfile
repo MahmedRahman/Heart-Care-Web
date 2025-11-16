@@ -29,11 +29,18 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Copy entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html
 
 # Expose port 9000 for PHP-FPM
 EXPOSE 9000
+
+# Set entrypoint
+ENTRYPOINT ["docker-entrypoint.sh"]
 
 # Start PHP-FPM
 CMD ["php-fpm"]
