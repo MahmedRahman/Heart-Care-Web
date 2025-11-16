@@ -1,0 +1,314 @@
+@extends('layouts.app')
+
+@section('title', 'Add New Lab Report')
+
+@section('content')
+<div class="page-header">
+    <div class="page-header-content">
+        <div>
+            <h1 class="page-title">Add New Lab Report</h1>
+            <p class="page-subtitle">Upload laboratory test reports (PDF files)</p>
+        </div>
+        <a href="{{ route('lab-reports.index') }}" class="mdc-button mdc-button--outlined">
+            Back to List
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <form action="{{ route('lab-reports.store') }}" method="POST" class="form" enctype="multipart/form-data">
+        @csrf
+
+        <div class="form-section">
+            <h3 class="form-section-title">Report Information</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="patient_id" class="form-label">Patient <span class="required">*</span></label>
+                    <select id="patient_id" name="patient_id" class="form-select" required>
+                        <option value="">Select Patient</option>
+                        @foreach($patients as $patient)
+                            <option value="{{ $patient->id }}" {{ old('patient_id') == $patient->id ? 'selected' : '' }}>
+                                {{ $patient->full_name }} ({{ $patient->hospital_id }})
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('patient_id')
+                        <span class="form-error">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="report_name" class="form-label">Report Name <span class="required">*</span></label>
+                    <input type="text" id="report_name" name="report_name" class="form-input" value="{{ old('report_name') }}" required>
+                    @error('report_name')
+                        <span class="form-error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="report_date" class="form-label">Report Date <span class="required">*</span></label>
+                    <input type="date" id="report_date" name="report_date" class="form-input" value="{{ old('report_date', date('Y-m-d')) }}" required>
+                    @error('report_date')
+                        <span class="form-error">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3 class="form-section-title">Upload PDF Files</h3>
+            <div class="form-row">
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label for="files" class="form-label">PDF Files <span class="required">*</span></label>
+                    <input type="file" id="files" name="files[]" class="form-file" accept=".pdf" multiple required>
+                    <p class="form-hint">You can upload multiple PDF files. Maximum file size: 10MB per file.</p>
+                    @error('files')
+                        <span class="form-error">{{ $message }}</span>
+                    @enderror
+                    @error('files.*')
+                        <span class="form-error">{{ $message }}</span>
+                    @enderror
+                    <div id="file-preview" class="file-preview" style="display: none; margin-top: 16px;">
+                        <div class="file-preview-title">Selected Files:</div>
+                        <div id="file-list" class="file-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a href="{{ route('lab-reports.index') }}" class="mdc-button mdc-button--outlined">Cancel</a>
+            <button type="submit" class="mdc-button">Create Report</button>
+        </div>
+    </form>
+</div>
+@endsection
+
+@push('styles')
+<style>
+    .page-header {
+        margin-bottom: 32px;
+    }
+
+    .page-header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 24px;
+    }
+
+    .page-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--md-sys-color-on-surface);
+        margin-bottom: 8px;
+        letter-spacing: -0.5px;
+    }
+
+    .page-subtitle {
+        font-size: 15px;
+        color: var(--md-sys-color-on-surface-variant);
+    }
+
+    .card {
+        background: var(--md-sys-color-surface);
+        border-radius: 20px;
+        padding: 32px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border: 1px solid var(--md-sys-color-outline);
+    }
+
+    .form-section {
+        margin-bottom: 40px;
+    }
+
+    .form-section:last-of-type {
+        margin-bottom: 32px;
+    }
+
+    .form-section-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--md-sys-color-on-surface);
+        margin-bottom: 24px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid var(--md-sys-color-outline);
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+        margin-bottom: 24px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-label {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--md-sys-color-on-surface);
+        margin-bottom: 8px;
+    }
+
+    .required {
+        color: #C62828;
+    }
+
+    .form-select {
+        width: 100%;
+        padding: 14px 18px;
+        border: 2px solid var(--md-sys-color-outline-variant);
+        border-radius: 12px;
+        font-size: 15px;
+        font-family: 'Roboto', sans-serif;
+        color: var(--md-sys-color-on-surface);
+        background-color: var(--md-sys-color-surface);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+    }
+
+    .form-select:focus {
+        outline: none;
+        border-color: var(--md-sys-color-primary);
+        box-shadow: 0px 0px 0px 4px rgba(13, 38, 141, 0.1);
+    }
+
+    .form-file {
+        width: 100%;
+        padding: 14px 18px;
+        border: 2px dashed var(--md-sys-color-outline);
+        border-radius: 12px;
+        font-size: 15px;
+        font-family: 'Roboto', sans-serif;
+        color: var(--md-sys-color-on-surface);
+        background-color: var(--md-sys-color-surface-variant);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+    }
+
+    .form-file:hover {
+        border-color: var(--md-sys-color-primary);
+        background-color: var(--md-sys-color-primary-container);
+    }
+
+    .form-file:focus {
+        outline: none;
+        border-color: var(--md-sys-color-primary);
+        box-shadow: 0px 0px 0px 4px rgba(13, 38, 141, 0.1);
+    }
+
+    .form-hint {
+        font-size: 12px;
+        color: var(--md-sys-color-on-surface-variant);
+        margin-top: 6px;
+        line-height: 1.5;
+    }
+
+    .form-error {
+        display: block;
+        font-size: 12px;
+        color: #C62828;
+        margin-top: 6px;
+        line-height: 1.5;
+        font-weight: 500;
+    }
+
+    .file-preview {
+        padding: 16px;
+        background: var(--md-sys-color-surface-variant);
+        border-radius: 12px;
+        border: 1px solid var(--md-sys-color-outline);
+    }
+
+    .file-preview-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--md-sys-color-on-surface);
+        margin-bottom: 12px;
+    }
+
+    .file-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .file-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 12px;
+        background: var(--md-sys-color-surface);
+        border-radius: 8px;
+        font-size: 13px;
+        color: var(--md-sys-color-on-surface);
+    }
+
+    .file-item-name {
+        flex: 1;
+    }
+
+    .file-item-size {
+        color: var(--md-sys-color-on-surface-variant);
+        margin-left: 12px;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid var(--md-sys-color-outline);
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script>
+    document.getElementById('files').addEventListener('change', function(e) {
+        const files = e.target.files;
+        const preview = document.getElementById('file-preview');
+        const fileList = document.getElementById('file-list');
+        
+        if (files.length > 0) {
+            preview.style.display = 'block';
+            fileList.innerHTML = '';
+            
+            Array.from(files).forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                
+                const fileName = document.createElement('span');
+                fileName.className = 'file-item-name';
+                fileName.textContent = file.name;
+                
+                const fileSize = document.createElement('span');
+                fileSize.className = 'file-item-size';
+                fileSize.textContent = formatFileSize(file.size);
+                
+                fileItem.appendChild(fileName);
+                fileItem.appendChild(fileSize);
+                fileList.appendChild(fileItem);
+            });
+        } else {
+            preview.style.display = 'none';
+        }
+    });
+
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+    }
+</script>
+@endpush
+

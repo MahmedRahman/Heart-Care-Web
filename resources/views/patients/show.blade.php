@@ -10,10 +10,6 @@
             <p class="page-subtitle">{{ $patient->full_name }}</p>
         </div>
         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-            <a href="{{ route('patients.heart-rate-readings.index', $patient) }}" class="mdc-button btn-heart-rate" style="background: linear-gradient(135deg, #C62828 0%, #E53935 100%); text-decoration: none;">
-                <span class="material-symbols-outlined">favorite</span>
-                Heart Rate Readings
-            </a>
             <a href="{{ route('patients.edit', $patient) }}" class="mdc-button btn-edit-patient" style="text-decoration: none;">
                 <span class="material-symbols-outlined">edit</span>
                 Edit Patient
@@ -360,6 +356,68 @@
         </div>
     </div>
 </div>
+
+<!-- Vitals Signs Section -->
+<div class="vitals-section">
+    <div class="vitals-buttons">
+        <a href="{{ route('patients.heart-rate-readings.index', $patient) }}" class="vitals-button vitals-button-heart-rate">
+            <span class="material-symbols-outlined">favorite</span>
+            <div class="vitals-button-content">
+                <span class="vitals-button-title">Heart Rate Readings</span>
+                <span class="vitals-button-subtitle">View and manage heart rate data</span>
+            </div>
+        </a>
+        <a href="{{ route('patients.blood-pressure-readings.index', $patient) }}" class="vitals-button vitals-button-blood-pressure">
+            <span class="material-symbols-outlined">monitor_heart</span>
+            <div class="vitals-button-content">
+                <span class="vitals-button-title">Blood Pressure Readings</span>
+                <span class="vitals-button-subtitle">View and manage blood pressure data</span>
+            </div>
+        </a>
+        <a href="{{ route('patients.oxygen-saturation-readings.index', $patient) }}" class="vitals-button vitals-button-oxygen">
+            <span class="material-symbols-outlined">air</span>
+            <div class="vitals-button-content">
+                <span class="vitals-button-title">Oxygen Saturation Readings</span>
+                <span class="vitals-button-subtitle">View and manage oxygen saturation data</span>
+            </div>
+        </a>
+        <a href="{{ route('patients.weight-readings.index', $patient) }}" class="vitals-button vitals-button-weight">
+            <span class="material-symbols-outlined">monitor_weight</span>
+            <div class="vitals-button-content">
+                <span class="vitals-button-title">Weight Readings</span>
+                <span class="vitals-button-subtitle">View and manage weight data</span>
+            </div>
+        </a>
+        <a href="{{ route('patients.random-blood-sugar-readings.index', $patient) }}" class="vitals-button vitals-button-sugar">
+            <span class="material-symbols-outlined">bloodtype</span>
+            <div class="vitals-button-content">
+                <span class="vitals-button-title">Random Blood Sugar</span>
+                <span class="vitals-button-subtitle">View and manage blood sugar data</span>
+            </div>
+        </a>
+        <a href="{{ route('patients.fluid-balance-readings.index', $patient) }}" class="vitals-button vitals-button-fluid">
+            <span class="material-symbols-outlined">water_drop</span>
+            <div class="vitals-button-content">
+                <span class="vitals-button-title">Fluid Balance</span>
+                <span class="vitals-button-subtitle">View and manage fluid balance data</span>
+            </div>
+        </a>
+    </div>
+</div>
+
+<!-- Prescriptions Section -->
+<div class="prescriptions-section">
+    <h2 class="section-title">Prescriptions</h2>
+    <div class="prescriptions-button-container">
+        <a href="{{ route('patients.prescriptions.index', $patient) }}" class="prescription-button">
+            <span class="material-symbols-outlined">medication</span>
+            <div class="prescription-button-content">
+                <span class="prescription-button-title">Prescriptions</span>
+                <span class="prescription-button-subtitle">View and manage patient prescriptions</span>
+            </div>
+        </a>
+    </div>
+</div>
 @endsection
 
 @push('styles')
@@ -702,6 +760,191 @@
         text-decoration: none !important;
     }
 
+    /* Vitals Signs Section */
+    .vitals-section {
+        margin-top: 48px;
+        padding-top: 32px;
+        border-top: 2px solid var(--md-sys-color-outline);
+    }
+
+    .vitals-buttons {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+
+    @media (max-width: 1200px) {
+        .vitals-buttons {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    .vitals-button {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 24px 32px;
+        border-radius: 16px;
+        text-decoration: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 2px solid transparent;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .vitals-button:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        text-decoration: none;
+    }
+
+    .vitals-button-heart-rate {
+        background: linear-gradient(135deg, #C62828 0%, #E53935 100%);
+        color: white;
+    }
+
+    .vitals-button-heart-rate:hover {
+        background: linear-gradient(135deg, #B71C1C 0%, #D32F2F 100%);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .vitals-button-blood-pressure {
+        background: linear-gradient(135deg, #1976D2 0%, #2196F3 100%);
+        color: white;
+    }
+
+    .vitals-button-blood-pressure:hover {
+        background: linear-gradient(135deg, #1565C0 0%, #1E88E5 100%);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .vitals-button-oxygen {
+        background: linear-gradient(135deg, #00BCD4 0%, #00ACC1 100%);
+        color: white;
+    }
+
+    .vitals-button-oxygen:hover {
+        background: linear-gradient(135deg, #0097A7 0%, #00838F 100%);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .vitals-button-weight {
+        background: linear-gradient(135deg, #795548 0%, #8D6E63 100%);
+        color: white;
+    }
+
+    .vitals-button-weight:hover {
+        background: linear-gradient(135deg, #6D4C41 0%, #7E5E52 100%);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .vitals-button-sugar {
+        background: linear-gradient(135deg, #FF6F00 0%, #FF8F00 100%);
+        color: white;
+    }
+
+    .vitals-button-sugar:hover {
+        background: linear-gradient(135deg, #E65100 0%, #FF6F00 100%);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .vitals-button-fluid {
+        background: linear-gradient(135deg, #00ACC1 0%, #26C6DA 100%);
+        color: white;
+    }
+
+    .vitals-button-fluid:hover {
+        background: linear-gradient(135deg, #0097A7 0%, #00BCD4 100%);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Prescriptions Section */
+    .prescriptions-section {
+        margin-top: 48px;
+        padding-top: 32px;
+        border-top: 2px solid var(--md-sys-color-outline);
+    }
+
+    .section-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--md-sys-color-on-surface);
+        margin-bottom: 24px;
+    }
+
+    .prescriptions-button-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+    }
+
+    .prescription-button {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 24px;
+        background: linear-gradient(135deg, #7B1FA2 0%, #9C27B0 100%);
+        color: white;
+        border-radius: 16px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        box-shadow: 0 4px 12px rgba(123, 31, 162, 0.2);
+    }
+
+    .prescription-button:hover {
+        background: linear-gradient(135deg, #6A1B9A 0%, #8E24AA 100%);
+        border-color: rgba(255, 255, 255, 0.3);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(123, 31, 162, 0.3);
+    }
+
+    .prescription-button .material-symbols-outlined {
+        font-size: 48px;
+        flex-shrink: 0;
+    }
+
+    .prescription-button-content {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .prescription-button-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: white;
+    }
+
+    .prescription-button-subtitle {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .vitals-button .material-symbols-outlined {
+        font-size: 48px;
+        flex-shrink: 0;
+    }
+
+    .vitals-button-content {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1;
+    }
+
+    .vitals-button-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: white;
+        line-height: 1.3;
+    }
+
+    .vitals-button-subtitle {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.85);
+        line-height: 1.4;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
         .patient-profile-header {
@@ -729,6 +972,18 @@
 
         .detail-grid {
             grid-template-columns: 1fr;
+        }
+
+        .vitals-buttons {
+            grid-template-columns: 1fr;
+        }
+
+        .vitals-button {
+            padding: 20px 24px;
+        }
+
+        .vitals-button .material-symbols-outlined {
+            font-size: 40px;
         }
     }
 </style>

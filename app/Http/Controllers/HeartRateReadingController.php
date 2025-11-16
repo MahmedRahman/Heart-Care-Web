@@ -9,6 +9,18 @@ use Illuminate\Http\Request;
 class HeartRateReadingController extends Controller
 {
     /**
+     * Display a listing of all heart rate readings.
+     */
+    public function all()
+    {
+        $readings = HeartRateReading::with('patient')
+            ->latest('date')
+            ->latest('time')
+            ->paginate(15);
+        return view('heart-rate-readings.all', compact('readings'));
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index(Patient $patient)

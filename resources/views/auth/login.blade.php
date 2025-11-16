@@ -120,15 +120,25 @@
         }
 
         .mdc-text-field--outlined {
-            border: 1px solid var(--md-sys-color-outline);
-            border-radius: 4px;
-            padding: 0 16px;
-            transition: all 0.2s ease;
+            border: 2px solid var(--md-sys-color-outline-variant);
+            border-radius: 12px;
+            padding: 0 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--md-sys-color-surface);
+            box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+        }
+
+        .mdc-text-field--outlined:hover {
+            border-color: var(--md-sys-color-outline);
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.08);
         }
 
         .mdc-text-field--outlined:focus-within {
             border-color: var(--md-sys-color-primary);
             border-width: 2px;
+            box-shadow: 0px 0px 0px 4px rgba(13, 38, 141, 0.1),
+                        0px 2px 8px 0px rgba(13, 38, 141, 0.15);
+            transform: translateY(-1px);
         }
 
         .mdc-text-field--outlined.filled {
@@ -144,8 +154,9 @@
             font-size: 16px;
             font-family: 'Roboto', sans-serif;
             color: var(--md-sys-color-on-surface);
-            padding: 0;
+            padding: 0 12px;
             height: 100%;
+            font-weight: 400;
         }
 
         .mdc-text-field__input::placeholder {
@@ -154,39 +165,54 @@
 
         .mdc-floating-label {
             position: absolute;
-            left: 16px;
+            left: 56px;
             top: 50%;
             transform: translateY(-50%);
             font-size: 16px;
             color: var(--md-sys-color-on-surface-variant);
             pointer-events: none;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             background: var(--md-sys-color-surface);
-            padding: 0 4px;
+            padding: 0 6px;
+            font-weight: 400;
         }
 
         .mdc-text-field--outlined:focus-within .mdc-floating-label,
         .mdc-text-field--outlined.filled .mdc-floating-label {
             top: 0;
-            transform: translateY(-50%) scale(0.75);
+            left: 52px;
+            transform: translateY(-50%) scale(0.875);
             color: var(--md-sys-color-primary);
+            font-weight: 500;
         }
 
         .mdc-text-field__input:not(:placeholder-shown) + .mdc-floating-label {
             top: 0;
-            transform: translateY(-50%) scale(0.75);
+            left: 52px;
+            transform: translateY(-50%) scale(0.875);
             color: var(--md-sys-color-primary);
+            font-weight: 500;
         }
 
         .mdc-text-field__icon {
             color: var(--md-sys-color-on-surface-variant);
-            margin-left: 12px;
             display: flex;
             align-items: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
+        }
+
+        .mdc-text-field--outlined:focus-within .mdc-text-field__icon {
+            color: var(--md-sys-color-primary);
+            transform: scale(1.1);
+        }
+
+        .mdc-text-field--outlined.filled .mdc-text-field__icon {
+            color: var(--md-sys-color-primary);
         }
 
         .mdc-text-field__icon .material-symbols-outlined {
-            font-size: 24px;
+            font-size: 22px;
         }
 
         .form-options {
@@ -251,32 +277,48 @@
 
         .mdc-button {
             width: 100%;
-            height: 40px;
+            height: 48px;
             border: none;
-            border-radius: 20px;
-            background-color: var(--md-sys-color-primary);
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--md-sys-color-primary) 0%, var(--md-sys-color-secondary) 100%);
             color: var(--md-sys-color-on-primary);
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 15px;
+            font-weight: 600;
             font-family: 'Roboto', sans-serif;
-            letter-spacing: 0.1px;
+            letter-spacing: 0.2px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.30), 
-                        0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0px 2px 4px 0px rgba(13, 38, 141, 0.25), 
+                        0px 4px 12px 0px rgba(13, 38, 141, 0.15);
             position: relative;
             overflow: hidden;
         }
 
+        .mdc-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
         .mdc-button:hover {
-            box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.30), 
-                        0px 4px 8px 3px rgba(0, 0, 0, 0.15),
-                        0px 2px 6px rgba(13, 38, 141, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0px 4px 8px 0px rgba(13, 38, 141, 0.3), 
+                        0px 8px 16px 0px rgba(13, 38, 141, 0.2);
+        }
+
+        .mdc-button:hover::before {
+            left: 100%;
         }
 
         .mdc-button:active {
-            box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.30), 
-                        0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+            transform: translateY(0);
+            box-shadow: 0px 1px 3px 0px rgba(13, 38, 141, 0.25), 
+                        0px 2px 6px 0px rgba(13, 38, 141, 0.15);
         }
 
         .mdc-button:disabled {
@@ -367,6 +409,20 @@
                 </div>
             @endif
 
+            <!-- Test Credentials Info -->
+            <div style="background: linear-gradient(135deg, #E8EDF7 0%, #D6E0FF 100%); border: 1px solid var(--md-sys-color-primary-container); border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+                <div style="display: flex; align-items: flex-start; gap: 12px;">
+                    <span class="material-symbols-outlined" style="color: var(--md-sys-color-primary); font-size: 20px; flex-shrink: 0;">info</span>
+                    <div style="flex: 1;">
+                        <div style="font-size: 13px; font-weight: 600; color: var(--md-sys-color-primary); margin-bottom: 8px;">Test Credentials</div>
+                        <div style="font-size: 12px; color: var(--md-sys-color-on-surface-variant); line-height: 1.6;">
+                            <div><strong>Email:</strong> admin@heartcare.com</div>
+                            <div><strong>Password:</strong> admin123</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Login Form -->
             <form method="POST" action="{{ route('login') }}">
                 @csrf
@@ -382,7 +438,7 @@
                             id="email" 
                             name="email" 
                             class="mdc-text-field__input" 
-                            placeholder="Email"
+                            placeholder=" "
                             value="{{ old('email') }}"
                             required 
                             autofocus
@@ -402,7 +458,7 @@
                             id="password" 
                             name="password" 
                             class="mdc-text-field__input" 
-                            placeholder="Password"
+                            placeholder=" "
                             required
                         >
                         <label for="password" class="mdc-floating-label">Password</label>
@@ -445,20 +501,29 @@
         document.querySelectorAll('.mdc-text-field__input').forEach(input => {
             const field = input.closest('.mdc-text-field');
             
+            // Update field state
+            function updateFieldState() {
+                if (input.value || document.activeElement === input) {
+                    field.classList.add('filled');
+                } else {
+                    field.classList.remove('filled');
+                }
+            }
+            
             input.addEventListener('focus', () => {
                 field.classList.add('filled');
             });
             
             input.addEventListener('blur', () => {
-                if (!input.value) {
-                    field.classList.remove('filled');
-                }
+                updateFieldState();
+            });
+            
+            input.addEventListener('input', () => {
+                updateFieldState();
             });
             
             // Check if field has value on load
-            if (input.value) {
-                field.classList.add('filled');
-            }
+            updateFieldState();
         });
     </script>
 </body>

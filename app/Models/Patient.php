@@ -131,4 +131,39 @@ class Patient extends Authenticatable
     {
         return $this->hasMany(HeartRateReading::class);
     }
+
+    public function radiologyReports()
+    {
+        return $this->hasMany(RadiologyReport::class);
+    }
+
+    public function bloodPressureReadings()
+    {
+        return $this->hasMany(BloodPressureReading::class);
+    }
+
+    public function oxygenSaturationReadings()
+    {
+        return $this->hasMany(OxygenSaturationReading::class);
+    }
+
+    public function weightReadings()
+    {
+        return $this->hasMany(WeightReading::class);
+    }
+
+    public function randomBloodSugarReadings()
+    {
+        return $this->hasMany(RandomBloodSugarReading::class);
+    }
+
+    public function fluidBalanceReadings()
+    {
+        return $this->hasMany(FluidBalanceReading::class);
+    }
+
+    public function prescriptions()
+    {
+        return $this->hasMany(Prescription::class);
+    }
 }
