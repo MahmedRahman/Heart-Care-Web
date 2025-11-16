@@ -124,9 +124,15 @@
 <script>
     window.onload = function() {
         const urls = [];
+        const isHttps = window.location.protocol === 'https:';
 
         @foreach($urlsToDocs as $title => $url)
-            urls.push({name: "{{ $title }}", url: "{{ $url }}"});
+            let docUrl = "{{ $url }}";
+            // Convert HTTP to HTTPS if page is loaded over HTTPS
+            if (isHttps && docUrl.startsWith('http://')) {
+                docUrl = docUrl.replace('http://', 'https://');
+            }
+            urls.push({name: "{{ $title }}", url: docUrl});
         @endforeach
 
         // Build a system
